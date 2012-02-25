@@ -1,6 +1,7 @@
 #ifndef CHANNEL_NAMES
 #define CHANNEL_NAMES
 
+// Declarations for use in creating WPI objects
 namespace Channels
 {
 //Notes for operation that isn't obvious
