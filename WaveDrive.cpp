@@ -39,16 +39,35 @@ void WaveDrive::disableDrive()
 
 void WaveDrive::run()
 {
-	double leftValue = m_joystick->GetRawAxis(leftAxis);
-	double rightValue = m_joystick->GetRawAxis(rightAxis);
+	double forwardReverse = m_joystick->GetRawAxis(leftAxis);
+	double leftRight = m_joystick->GetRawAxis(rightAxis);
+	
+	double leftValue;
+	double rightValue;
 	
 	bool shifter = m_joystick->GetRawButton(6);
 	
 	bool leftNeg = leftValue < 0;
 	bool rightNeg = rightValue < 0;
 	
-	leftValue *= leftValue;
-	rightValue *= rightValue;
+	forwardReverse *= forwardReverse;
+	leftRight *= leftRight;
+	
+	leftValue = forwardReverse;
+	rightValue = forwardReverse;
+	
+	double temp = leftRight / 2;
+	
+	if(forwardReverse >= -.01)
+	{
+		leftValue = leftValue + temp;
+		rightValue = rightValue -temp;
+	}
+	else
+	{
+		leftValue = leftValue - temp;
+		rightValue = rightValue + temp;
+	}
 	
 	if(!leftNeg)
 		leftValue = 0 - leftValue;
@@ -69,8 +88,7 @@ void WaveDrive::run()
 	rightMotor2->Set(rightValue);
 	
 	leftMotor1->Set(leftValue);
-	leftMotor2->Set(leftValue);
-	
+	leftMotor2->Set(leftValue);	
 	
 	activeShiftSolenoid->Set(shifter);
 	inactiveShiftSolenoid->Set(!shifter);
