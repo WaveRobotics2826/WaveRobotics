@@ -29,12 +29,12 @@ void WaveDeliverySystem::run(Joystick *joystick)
 			deliveryMotor->Set(0);
 		}
 	}
+	else if(joystick->GetRawAxis(3) < -.01)
+	{
+		deliveryMotor->Set(1.0);
+	}
 	else 
 	{
 		deliveryMotor->Set(0);
-	}
-	
-	cout << "Lower Tower Sensor: " << lowerTowerSensor->Get() << endl;
-	cout << "Elevator Right    : " << elevatorRight->Get() << endl;
-	cout << "Elevator Left     : " << elevatorLeft->Get() << endl;
+	}	
 }

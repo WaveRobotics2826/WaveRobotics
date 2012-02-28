@@ -88,17 +88,18 @@ const int Shooter_Sensor =          1;
 //    3 -
 //    4 -
 //    5 -
+
 //    6 -
 //    7 -
 //    8 -
 //----------------------------------------------------  
 //Digital Output Card (slot 3)
 const int Shift_Default =                   1;
-const int Long_Cylinder_Extend_Solenoid =   2;
-const int Short_Cylinder_Retract_Solenoid = 3;
-const int Shift_Active =                    4;
-const int Long_Cylinder_Retract_Solenoid =  5;
-const int Short_Cylinder_Extend_Solenoid =  6;
+const int Short_Cylinder_Solenoid =   		2;
+const int Long_Cylinder_Solenoid = 			3;
+//  4 -
+//  5 - 
+//  6 -
 //  7 -
 //  8 -
 }

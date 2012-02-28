@@ -11,7 +11,7 @@ public:
 	
 	void run();
 	
-	void configureSolenoids(int one, int two);
+	void configureSolenoids(int one);
 private:
 	//Left joystick
 	Joystick *m_joystick;
@@ -24,9 +24,7 @@ private:
 	
 	Victor *leftMotor2;		
 	
-	Solenoid *inactiveShiftSolenoid;
-	
-	Solenoid *activeShiftSolenoid;
+	Solenoid *shiftSolenoid;
 	
 	int leftAxis;
 	

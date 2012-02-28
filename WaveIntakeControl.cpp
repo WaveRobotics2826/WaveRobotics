@@ -10,12 +10,12 @@ WaveIntakeControl::WaveIntakeControl(int channel, int slot, double speed):
 	intakeMotor->SetSafetyEnabled(false);	
 }
 
-void WaveIntakeControl::configureSolenoids(int longRe, int LongEx, int shortRe, int shortEx)
+void WaveIntakeControl::configureSolenoids(int longCyl, int shortCyl)
 {
-	longCylinderRetract = new Solenoid(longRe);		
-	longCylinderDeploy = new Solenoid(LongEx);
-	shortCylinderRetract = new Solenoid(shortRe);
-	shortCylinderDeploy = new Solenoid(shortEx);
+	
+	longCylinder = new Solenoid(longCyl);
+	shortCylinder = new Solenoid(shortCyl);
+	
 }
 
 void WaveIntakeControl::run(Joystick *joystick)
@@ -80,31 +80,33 @@ void WaveIntakeControl::activatePosition()
 	switch(position)
 	{
 	case Position_Up:
-		longCylinderRetract->Set(true);
-		shortCylinderRetract->Set(true);
-		longCylinderDeploy->Set(false);
-		shortCylinderDeploy->Set(false);
+		longCylinder->Set(false);
+		shortCylinder->Set(false);		
 		break;	
 	case Position_Ramp:
-		longCylinderRetract->Set(false);
-		shortCylinderRetract->Set(true);
-		longCylinderDeploy->Set(true);
-		shortCylinderDeploy->Set(false);
+		longCylinder->Set(true);
+		shortCylinder->Set(false);
 		break;
 	case Position_Down:
-		longCylinderRetract->Set(false);
-		shortCylinderRetract->Set(false);
-		longCylinderDeploy->Set(true);
-		shortCylinderDeploy->Set(true);
+		longCylinder->Set(true);
+		shortCylinder->Set(true);
 		break;
 	default:
 		break;
 	}
 }
 
-void WaveIntakeControl::intakeOn()
+void WaveIntakeControl::intakeOn(bool reverse)
 {
-	intakeMotor->Set(motorSpeed);
+	if(reverse)
+	{
+		intakeMotor->Set(motorSpeed);
+	}
+	else
+	{
+		intakeMotor->Set(-motorSpeed);
+	}
+		
 }
 
 void WaveIntakeControl::intakeOff()

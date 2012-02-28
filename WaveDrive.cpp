@@ -21,10 +21,9 @@ WaveDrive::WaveDrive(int leftAxisNumber, int rightAxisNumber, Joystick *joystick
 	rightMotor2->SetSafetyEnabled(false);	
 }
 
-void WaveDrive::configureSolenoids(int one, int two)
+void WaveDrive::configureSolenoids(int one)
 {
-	activeShiftSolenoid = new Solenoid(one);
-	inactiveShiftSolenoid = new Solenoid(two);
+	shiftSolenoid = new Solenoid(one);	
 }
 
 void WaveDrive::enableDrive()
@@ -50,15 +49,32 @@ void WaveDrive::run()
 	bool leftNeg = leftValue < 0;
 	bool rightNeg = rightValue < 0;
 	
-	forwardReverse *= forwardReverse;
-	leftRight *= leftRight;
+	if(forwardReverse >= 0)
+	{
+		forwardReverse *= forwardReverse;
+	}
+	else
+	{
+		forwardReverse *=forwardReverse;
+		forwardReverse = 0 - forwardReverse;
+	}	
+	if(leftRight >= 0)
+	{
+		leftRight *= leftRight;
+	}
+	else 
+	{
+		leftRight *= leftRight;
+		leftRight = 0 - leftRight;
+	}
+	
 	
 	leftValue = forwardReverse;
 	rightValue = forwardReverse;
 	
-	double temp = leftRight / 2;
+	double temp = leftRight;
 	
-	if(forwardReverse >= -.01)
+	if(forwardReverse >= 0)
 	{
 		leftValue = leftValue + temp;
 		rightValue = rightValue -temp;
@@ -90,6 +106,5 @@ void WaveDrive::run()
 	leftMotor1->Set(leftValue);
 	leftMotor2->Set(leftValue);	
 	
-	activeShiftSolenoid->Set(shifter);
-	inactiveShiftSolenoid->Set(!shifter);
+	shiftSolenoid->Set(shifter);
 }

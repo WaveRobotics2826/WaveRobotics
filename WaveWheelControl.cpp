@@ -4,6 +4,8 @@
 using namespace std;
 using namespace Channels;
 
+
+
 WaveWheelControl::WaveWheelControl(DriverStationLCD *display)
 {
 	this->display = display;
