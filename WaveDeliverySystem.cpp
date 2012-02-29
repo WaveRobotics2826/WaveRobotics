@@ -43,6 +43,7 @@ void WaveDeliverySystem::run(Joystick *joystick)
 
 void WaveDeliverySystem::automaticDelivery()
 {
+	///need to add comments sometime
 	if(topSensor->Get())
 	{
 		if(elevatorLeft->Get() && elevatorRight->Get())
