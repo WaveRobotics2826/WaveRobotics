@@ -21,10 +21,9 @@ WaveDrive::WaveDrive(int leftAxisNumber, int rightAxisNumber, Joystick *joystick
 	rightMotor2->SetSafetyEnabled(false);	
 }
 
-void WaveDrive::configureSolenoids(int one, int two)
+void WaveDrive::configureSolenoids(int one)
 {
-	activeShiftSolenoid = new Solenoid(one);
-	inactiveShiftSolenoid = new Solenoid(two);
+	shiftSolenoid = new Solenoid(one);	
 }
 
 void WaveDrive::enableDrive()
@@ -39,16 +38,64 @@ void WaveDrive::disableDrive()
 
 void WaveDrive::run()
 {
-	double leftValue = m_joystick->GetRawAxis(leftAxis);
-	double rightValue = m_joystick->GetRawAxis(rightAxis);
+	double forwardReverse =  m_joystick->GetRawAxis(leftAxis);
+	double leftRight = m_joystick->GetRawAxis(rightAxis);
+	
+	if(forwardReverse  <= .1 && forwardReverse >= 0)
+	{
+		forwardReverse = 0;
+	}
+	
+	if(leftRight <= .05 && leftRight >= -.05)
+	{
+		leftRight = 0;
+	}	
+	
+	double leftValue;
+	double rightValue;
 	
 	bool shifter = m_joystick->GetRawButton(6);
 	
 	bool leftNeg = leftValue < 0;
 	bool rightNeg = rightValue < 0;
 	
-	leftValue *= leftValue;
-	rightValue *= rightValue;
+	if(forwardReverse >= 0)
+	{
+		forwardReverse *= forwardReverse;
+	}
+	else
+	{
+		forwardReverse *=forwardReverse;
+		forwardReverse = 0 - forwardReverse;
+	}	
+	if(leftRight >= 0)
+	{
+		leftRight *= leftRight;
+	}
+	else 
+	{
+		leftRight *= leftRight;
+		leftRight = 0 - leftRight;
+	}
+	
+	
+	leftValue = forwardReverse;
+	rightValue = forwardReverse;
+	
+	double temp = leftRight;
+	cout << forwardReverse << " " << leftRight << endl;
+	if(forwardReverse > 0)
+	{
+		//backward
+		leftValue = leftValue + temp;
+		rightValue = rightValue - temp;
+	}
+	else
+	{
+		//forward
+		leftValue = leftValue - temp;
+		rightValue = rightValue + temp;
+	}
 	
 	if(!leftNeg)
 		leftValue = 0 - leftValue;
@@ -69,9 +116,7 @@ void WaveDrive::run()
 	rightMotor2->Set(rightValue);
 	
 	leftMotor1->Set(leftValue);
-	leftMotor2->Set(leftValue);
+	leftMotor2->Set(leftValue);	
 	
-	
-	activeShiftSolenoid->Set(shifter);
-	inactiveShiftSolenoid->Set(!shifter);
+	shiftSolenoid->Set(shifter);
 }
