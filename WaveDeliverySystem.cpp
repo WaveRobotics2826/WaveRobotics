@@ -10,6 +10,8 @@ WaveDeliverySystem::WaveDeliverySystem(int channel, int slot)
 	lowerTowerSensor = new DigitalInput(Lower_Tower_Sensor);
 	elevatorRight = new DigitalInput(Elevator_Sensor_Rt);
 	elevatorLeft = new DigitalInput(Elevator_Sensor_Lt);
+	moveToElevator = false;
+	
 }
 
 void WaveDeliverySystem::run(Joystick *joystick)
@@ -35,6 +37,39 @@ void WaveDeliverySystem::run(Joystick *joystick)
 	}
 	else 
 	{
-		deliveryMotor->Set(0);
+		automaticDelivery();
 	}	
+}
+
+void WaveDeliverySystem::automaticDelivery()
+{
+	if(topSensor->Get())
+	{
+		if(elevatorLeft->Get() && elevatorRight->Get())
+		{
+			if(lowerTowerSensor->Get())
+			{
+				deliveryMotor->Set(0);
+			}
+			else
+			{
+				moveToElevator = true;
+			}
+		}
+		else
+		{
+			if(lowerTowerSensor->Get())
+			{
+				deliveryMotor->Set(0);
+			}			
+			else
+			{
+				moveToElevator = true;
+			}
+		}
+	}
+	else
+	{
+		deliveryMotor->Set(0);
+	}
 }

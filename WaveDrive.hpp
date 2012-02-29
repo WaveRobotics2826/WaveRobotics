@@ -1,5 +1,8 @@
 #include "WPILib.h"
 
+#ifndef WAVEDRIVE
+#define WAVEDRIVE
+
 class WaveDrive
 {
 public:
@@ -12,6 +15,7 @@ public:
 	void run();
 	
 	void configureSolenoids(int one);
+	
 private:
 	//Left joystick
 	Joystick *m_joystick;
@@ -30,3 +34,5 @@ private:
 	
 	int rightAxis;
 };
+
+#endif

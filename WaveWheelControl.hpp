@@ -1,5 +1,8 @@
 #include "WPILib.h"
 
+#ifndef WAVEWHEELCONTROL
+#define WAVEWHEELCONTROL
+
 class WaveWheelControl : public PIDSource, PIDOutput
 {
 public:
@@ -27,7 +30,7 @@ private:
 	Victor *motor2;
 	Victor *motor3;
 	Victor *motor4;
-	DriverStationLCD *display;
-	
-	
+	DriverStationLCD *display;	
 };
+
+#endif

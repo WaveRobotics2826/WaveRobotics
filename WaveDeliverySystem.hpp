@@ -1,11 +1,16 @@
 #include "WPILib.h"
 
+#ifndef WAVEDELIVERYSYSTEM
+#define WAVEDELIVERYSYSTEM
+
 class WaveDeliverySystem
 {
 public:
 	WaveDeliverySystem(int channel, int slot);
 	
 	void run(Joystick *joystick);
+	
+	void automaticDelivery();
 	
 private:
 	Victor *deliveryMotor;
@@ -17,4 +22,8 @@ private:
 	DigitalInput *elevatorRight;
 	
 	DigitalInput *elevatorLeft;
+	
+	bool moveToElevator;
 };
+
+#endif

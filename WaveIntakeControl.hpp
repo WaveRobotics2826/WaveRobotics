@@ -1,5 +1,8 @@
 #include "WPILib.h"
 
+#ifndef WAVEINTAKECONTROL
+#define WAVEINTAKECONTROL
+
 enum Position
 {
 	Position_Down,	
@@ -25,6 +28,9 @@ public:
 	/// \brief Commands 0% motor speed for intake
 	void intakeOff();		
 	
+	/// \brief resets the intake to the up position
+	void resetIntakePosition();
+	
 	/// \brief Setup solenoids
 	void configureSolenoids(int one, int two);
 private:
@@ -48,3 +54,5 @@ private:
 	
 	bool raiseButton;
 };
+
+#endif

@@ -1,6 +1,9 @@
 #include "WPILib.h"
 #include "ChannelNames.hpp"
 
+#ifndef WAVETURRETCONTROL
+#define WAVETURRETCONTROL
+
 class WaveTurretControl
 {
 public:
@@ -15,3 +18,5 @@ private:
 	AnalogChannel *turretSensor;
 	
 };
+
+#endif

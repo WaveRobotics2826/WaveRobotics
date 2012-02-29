@@ -20,60 +20,23 @@ void WaveIntakeControl::configureSolenoids(int longCyl, int shortCyl)
 
 void WaveIntakeControl::run(Joystick *joystick)
 {		
-	if(joystick->GetRawButton(3))
+	if(joystick->GetRawButton(4))
 	{
-		if(!lowerButton)
-		{			
-			lowerButton = true;
-			lower();
-		}
+		position = Position_Up;
 	}
 	else if(joystick->GetRawButton(2))
 	{
-		if(!raiseButton)
-		{
-			raiseButton = true;
-			raise();
-		}
+		position = Position_Ramp;
 	}
-	else
+	else if(joystick->GetRawButton(1))
 	{
-		lowerButton = false;
-		raiseButton = false;
+		position = Position_Down;
 	}
 	
 	activatePosition();
 }
 
-void WaveIntakeControl::lower()
-{
-	switch(position)
-	{
-	case Position_Up:
-		position = Position_Ramp;
-		break;
-	case Position_Ramp:
-		position = Position_Down;
-		break;
-	default:
-		break;
-	}
-}
-	
-void WaveIntakeControl::raise()
-{
-	switch(position)
-	{
-	case Position_Down:
-		position = Position_Ramp;
-		break;
-	case Position_Ramp:
-		position = Position_Up;
-		break;
-	default:
-		break;
-	}
-}
+
 	
 void WaveIntakeControl::activatePosition()
 {
@@ -94,6 +57,11 @@ void WaveIntakeControl::activatePosition()
 	default:
 		break;
 	}
+}
+
+void WaveIntakeControl::resetIntakePosition()
+{
+	position = Position_Up;
 }
 
 void WaveIntakeControl::intakeOn(bool reverse)

@@ -1,6 +1,10 @@
 #include "WPILib.h"
 #include "WaveDrive.hpp"
-
+#include "WaveCompressor.hpp"
+#include "WaveWheelControl.hpp"
+#include "WaveIntakeControl.hpp"
+#include "WaveTurretControl.hpp"
+#include "WaveDeliverySystem.hpp"
 
 /**
  * This is a demo program showing the use of the RobotBase class.
@@ -27,6 +31,16 @@ private:
 	Joystick *operatorJoystick;
 	
 	DriverStationLCD *display;
+	
+	WaveDeliverySystem *delivery;
+	
+	WaveTurretControl *turret;
+	
+	WaveCompressor *compressor;
+	
+	WaveWheelControl *launcher;
+	
+	WaveIntakeControl *intake;
 	
 	bool buttonControlUpSpeed;
 	

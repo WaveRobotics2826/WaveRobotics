@@ -38,8 +38,18 @@ void WaveDrive::disableDrive()
 
 void WaveDrive::run()
 {
-	double forwardReverse = m_joystick->GetRawAxis(leftAxis);
+	double forwardReverse =  m_joystick->GetRawAxis(leftAxis);
 	double leftRight = m_joystick->GetRawAxis(rightAxis);
+	
+	if(forwardReverse  <= .1 && forwardReverse >= 0)
+	{
+		forwardReverse = 0;
+	}
+	
+	if(leftRight <= .05 && leftRight >= -.05)
+	{
+		leftRight = 0;
+	}	
 	
 	double leftValue;
 	double rightValue;
@@ -73,14 +83,16 @@ void WaveDrive::run()
 	rightValue = forwardReverse;
 	
 	double temp = leftRight;
-	
-	if(forwardReverse >= 0)
+	cout << forwardReverse << " " << leftRight << endl;
+	if(forwardReverse > 0)
 	{
+		//backward
 		leftValue = leftValue + temp;
-		rightValue = rightValue -temp;
+		rightValue = rightValue - temp;
 	}
 	else
 	{
+		//forward
 		leftValue = leftValue - temp;
 		rightValue = rightValue + temp;
 	}
