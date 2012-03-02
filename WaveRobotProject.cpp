@@ -23,6 +23,7 @@ WaveRobotProject::WaveRobotProject(void)
 	compressor = new WaveCompressor(display);
 	launcher = new WaveWheelControl(display);
 	intake = new WaveIntakeControl(5, 1, 1.0);	
+	ioBoard = new WaveIOBoard();
 	
 	drive->configureSolenoids(Shift_Default);
 	intake->configureSolenoids(
@@ -58,7 +59,8 @@ void WaveRobotProject::OperatorControl(void)
 		drive->getDistanceTraveled();
 		delivery->run(operatorJoystick);
 		turret->run(operatorJoystick);
-		intake->run(driverJoystick);		
+		intake->run(driverJoystick);	
+		ioBoard->run();
 		
 		if(operatorJoystick->GetRawButton(5))
 		{		
