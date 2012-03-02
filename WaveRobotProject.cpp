@@ -36,16 +36,21 @@ WaveRobotProject::WaveRobotProject(void)
 
 void WaveRobotProject::Autonomous(void)
 {
-	launcher->setSpeed(1370);
-	drive->resetMeasure();
-	while(!autonomous->forwardReverseDriveCommand(-.5,120))
+	cout << "entering auto mode" << endl;
+	if(IsAutonomous())
 	{
-		
+		cout << "is auto mode" << endl;
+		launcher->setSpeed(1370);
+		drive->resetMeasure();
+		while(!autonomous->forwardReverseDriveCommand(-.35,120))
+		{}
+		drive->stop();
+		while(IsAutonomous())
+		{		
+			delivery->fire();
+		}
 	}
-	while(1)
-	{		
-		delivery->fire();
-	}
+	cout << "exiting auto mode" << endl;
 }
 
 
@@ -60,7 +65,7 @@ void WaveRobotProject::OperatorControl(void)
 		delivery->run(operatorJoystick);
 		turret->run(operatorJoystick);
 		intake->run(driverJoystick);	
-		ioBoard->run();
+		//ioBoard->run();
 		
 		if(operatorJoystick->GetRawButton(5))
 		{		

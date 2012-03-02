@@ -135,7 +135,13 @@ void WaveDrive::startMeasure()
 
 double WaveDrive::getDistanceTraveled()
 {
-	return rightEncoder->Get() / 2 * 13.7445 /500;
+	return rightEncoder->Get() * 13.7445 / 500;
+}
+
+void WaveDrive::stop()
+{
+	setLeftMotor(0);
+	setRightMotor(0);
 }
 
 bool WaveDrive::isRampSensed()

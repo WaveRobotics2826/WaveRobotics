@@ -10,10 +10,10 @@ WaveWheelControl::WaveWheelControl(DriverStationLCD *display)
 {
 	this->display = display;
 	input = new Counter(2, Shooter_Sensor);
-	pidController = new PIDController(.9,0.1,0.1,this,this);
+	pidController = new PIDController(10,0.8,.3,this,this);
 	pidController->SetInputRange(0,3000);
 	pidController->SetOutputRange(100,1000);
-	pidController->SetTolerance(.1);
+	pidController->SetTolerance(.01);
 	startWheel();
 	motor1 = new Victor(2, Shooter_Motor_1);
 	motor2 = new Victor(2, Shooter_Motor_2);

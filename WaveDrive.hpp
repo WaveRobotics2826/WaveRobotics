@@ -26,6 +26,8 @@ public:
 	
 	void setRightMotor(double value);
 	
+	void stop();
+	
 private:
 	bool isAutonomousMode;
 	
