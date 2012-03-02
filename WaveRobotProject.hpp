@@ -5,6 +5,7 @@
 #include "WaveIntakeControl.hpp"
 #include "WaveTurretControl.hpp"
 #include "WaveDeliverySystem.hpp"
+#include "AutonomousCommands.hpp"
 
 /**
  * This is a demo program showing the use of the RobotBase class.
@@ -41,6 +42,8 @@ private:
 	WaveWheelControl *launcher;
 	
 	WaveIntakeControl *intake;
+	
+	AutonomousCommands *autonomous;
 	
 	bool buttonControlUpSpeed;
 	

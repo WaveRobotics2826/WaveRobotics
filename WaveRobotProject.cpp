@@ -29,20 +29,33 @@ WaveRobotProject::WaveRobotProject(void)
 		Long_Cylinder_Solenoid,
 		Short_Cylinder_Solenoid);
 	launcher->setSpeed(850);
+	autonomous = new AutonomousCommands(drive);
 }
 
 
 void WaveRobotProject::Autonomous(void)
 {
-
+	launcher->setSpeed(1370);
+	drive->resetMeasure();
+	while(!autonomous->forwardReverseDriveCommand(-.5,120))
+	{
+		
+	}
+	while(1)
+	{		
+		delivery->fire();
+	}
 }
 
 
 void WaveRobotProject::OperatorControl(void)
 {	
-	compressor->run();		
+	compressor->run();	
+	drive->startMeasure();
 	while(IsOperatorControl())
 	{		
+		//cout << drive->getDistanceTraveled() << endl;
+		drive->getDistanceTraveled();
 		delivery->run(operatorJoystick);
 		turret->run(operatorJoystick);
 		intake->run(driverJoystick);		
@@ -58,16 +71,7 @@ void WaveRobotProject::OperatorControl(void)
 		else
 		{
 			intake->intakeOff();
-		}
-		cout << driverJoystick->GetRawButton(7);
-		cout << driverJoystick->GetRawButton(8);
-		cout << driverJoystick->GetRawButton(9);
-		cout << driverJoystick->GetRawButton(10);
-		cout << driverJoystick->GetRawButton(11);
-		cout << driverJoystick->GetRawButton(12) << endl;
-		cout << driverJoystick->GetRawAxis(6) << endl;
-		
-		
+		}		
 		if(operatorJoystick->GetRawButton(4))
 		{
 			if(!buttonControlUpSpeed)
