@@ -5,13 +5,9 @@
 #include "WaveIntakeControl.hpp"
 #include "WaveTurretControl.hpp"
 #include "WaveDeliverySystem.hpp"
+#include "AutonomousCommands.hpp"
+#include "WaveIOBoard.hpp"
 
-/**
- * This is a demo program showing the use of the RobotBase class.
- * The SimpleRobot class is the base of a robot application that will automatically call your
- * Autonomous and OperatorControl methods at the right time as controlled by the switches on
- * the driver station or the field controls.
- */ 
 class WaveRobotProject : public SimpleRobot
 {
 public:
@@ -41,6 +37,10 @@ private:
 	WaveWheelControl *launcher;
 	
 	WaveIntakeControl *intake;
+
+	WaveIOBoard *ioBoard; 
+	
+	AutonomousCommands *autonomous;
 	
 	bool buttonControlUpSpeed;
 	

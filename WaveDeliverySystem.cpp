@@ -18,10 +18,12 @@ void WaveDeliverySystem::run(Joystick *joystick)
 {
 	if(joystick->GetRawButton(1))
 	{
-		deliveryMotor->Set(-1.0);
+		resetAuto();
+		fire();
 	}
 	else if(joystick->GetRawButton(6))
 	{
+		resetAuto();
 		if(topSensor->Get())
 		{
 			deliveryMotor->Set(-1.0);
@@ -31,8 +33,9 @@ void WaveDeliverySystem::run(Joystick *joystick)
 			deliveryMotor->Set(0);
 		}
 	}
-	else if(joystick->GetRawAxis(3) < -.01)
+	else if(joystick->GetRawAxis(3) < -.1)
 	{
+		resetAuto();
 		deliveryMotor->Set(1.0);
 	}
 	else 
@@ -41,36 +44,66 @@ void WaveDeliverySystem::run(Joystick *joystick)
 	}	
 }
 
+void WaveDeliverySystem::resetAuto()
+{
+	elevatorSensorReset = false;
+	moveToElevator = false;
+}
+
+void WaveDeliverySystem::fire()
+{
+	deliveryMotor->Set(-1.0);
+}
+
 void WaveDeliverySystem::automaticDelivery()
 {
-	///need to add comments sometime
 	if(topSensor->Get())
 	{
-		if(elevatorLeft->Get() && elevatorRight->Get())
+		if(moveToElevator)
 		{
-			if(lowerTowerSensor->Get())
+			deliveryMotor->Set(-1.0);
+		}
+		if(lowerTowerSensor->Get())
+		{			
+			elevatorSensorReset = true;
+			if(elevatorLeft->Get() && elevatorRight->Get())
 			{
-				deliveryMotor->Set(0);
+				if(!moveToElevator)
+				{
+					deliveryMotor->Set(0);
+				}	
+				if(elevatorSensorReset && moveToElevator)
+				{
+					moveToElevator = false;
+				}
 			}
 			else
 			{
 				moveToElevator = true;
-			}
+			}			
 		}
 		else
-		{
-			if(lowerTowerSensor->Get())
+		{				
+			if(elevatorLeft->Get() && elevatorRight->Get())
 			{
-				deliveryMotor->Set(0);
+				if(!moveToElevator)
+				{
+					deliveryMotor->Set(0);
+				}
+				if(elevatorSensorReset && moveToElevator)
+				{
+					moveToElevator = false;
+				}
 			}			
 			else
 			{
 				moveToElevator = true;
-			}
+			}	
+			elevatorSensorReset = false;
 		}
 	}
 	else
 	{
 		deliveryMotor->Set(0);
-	}
+	}	
 }

@@ -35,8 +35,6 @@ void WaveIntakeControl::run(Joystick *joystick)
 	
 	activatePosition();
 }
-
-
 	
 void WaveIntakeControl::activatePosition()
 {

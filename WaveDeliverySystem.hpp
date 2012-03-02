@@ -12,6 +12,10 @@ public:
 	
 	void automaticDelivery();
 	
+	void resetAuto();
+	
+	void fire();
+	
 private:
 	Victor *deliveryMotor;
 	
@@ -24,6 +28,8 @@ private:
 	DigitalInput *elevatorLeft;
 	
 	bool moveToElevator;
+	
+	bool elevatorSensorReset;
 };
 
 #endif

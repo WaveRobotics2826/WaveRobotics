@@ -23,29 +23,49 @@ WaveRobotProject::WaveRobotProject(void)
 	compressor = new WaveCompressor(display);
 	launcher = new WaveWheelControl(display);
 	intake = new WaveIntakeControl(5, 1, 1.0);	
+	ioBoard = new WaveIOBoard();
 	
 	drive->configureSolenoids(Shift_Default);
 	intake->configureSolenoids(
 		Long_Cylinder_Solenoid,
 		Short_Cylinder_Solenoid);
 	launcher->setSpeed(850);
+	autonomous = new AutonomousCommands(drive);
 }
 
 
 void WaveRobotProject::Autonomous(void)
 {
-
+	cout << "entering auto mode" << endl;
+	if(IsAutonomous())
+	{
+		cout << "is auto mode" << endl;
+		launcher->setSpeed(1370);
+		drive->resetMeasure();
+		while(!autonomous->forwardReverseDriveCommand(-.35,120))
+		{}
+		drive->stop();
+		while(IsAutonomous())
+		{		
+			delivery->fire();
+		}
+	}
+	cout << "exiting auto mode" << endl;
 }
 
 
 void WaveRobotProject::OperatorControl(void)
 {	
-	compressor->run();		
+	compressor->run();	
+	drive->startMeasure();
 	while(IsOperatorControl())
 	{		
+		//cout << drive->getDistanceTraveled() << endl;
+		drive->getDistanceTraveled();
 		delivery->run(operatorJoystick);
 		turret->run(operatorJoystick);
-		intake->run(driverJoystick);		
+		intake->run(driverJoystick);	
+		//ioBoard->run();
 		
 		if(operatorJoystick->GetRawButton(5))
 		{		
@@ -58,16 +78,7 @@ void WaveRobotProject::OperatorControl(void)
 		else
 		{
 			intake->intakeOff();
-		}
-		cout << driverJoystick->GetRawButton(7);
-		cout << driverJoystick->GetRawButton(8);
-		cout << driverJoystick->GetRawButton(9);
-		cout << driverJoystick->GetRawButton(10);
-		cout << driverJoystick->GetRawButton(11);
-		cout << driverJoystick->GetRawButton(12) << endl;
-		cout << driverJoystick->GetRawAxis(6) << endl;
-		
-		
+		}		
 		if(operatorJoystick->GetRawButton(4))
 		{
 			if(!buttonControlUpSpeed)

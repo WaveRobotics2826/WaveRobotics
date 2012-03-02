@@ -34,14 +34,12 @@ const int Bridge_Sensor =             3;
 const int Elevator_Sensor_Rt =        4;
 const int Top_Tower_Sensor =          5;
 const int Elevator_Sensor_Lt =        6;
-const int Right_Encoder_A =           7;
-const int Right_Encoder_B =           8;
-const int Left_Encoder_A =            9;
-const int Left_Encoder_B =           10;
-//    11-
-//    12-
-//    13-
-//    14-
+//     7
+const int Right_Encoder_A =           8;
+const int Right_Encoder_B =           9;
+//    10
+const int Left_Encoder_A =           11;
+const int Left_Encoder_B =           12;
   
 //  Relay
 const int Compressor =              1;
@@ -62,9 +60,7 @@ const int Shooter_Motor_4 =         7;
 const int Delivery_Motor =          6;
 const int Turret_Motor_1 =          5;
 const int Turret_Motor_2 =          4;
-//    8 -
-//    9 - 
-//    10-
+
     
 //  D I/O
 const int Shooter_Sensor =          1;
