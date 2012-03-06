@@ -10,7 +10,8 @@ class WaveIOBoard
 	    WaveIOBoard();
 	    
 	    void run();
-
+	    int getCypressDial();
+	    void printCypressDial();
 	    
     private:
 	    

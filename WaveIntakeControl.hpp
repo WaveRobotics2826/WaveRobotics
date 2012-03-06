@@ -33,6 +33,10 @@ public:
 	
 	/// \brief Setup solenoids
 	void configureSolenoids(int one, int two);
+
+	//Allows Autonomous to set the intake position 
+	void activatePosition(Position setPosition);
+
 private:
 	void lower();
 	

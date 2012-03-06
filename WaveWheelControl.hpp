@@ -13,6 +13,7 @@ public:
 	virtual void PIDWrite(float output);
 	
 	virtual void setSpeed(int rpms);
+	double getSpeedSet();
 	
 	void stopWheel();
 	

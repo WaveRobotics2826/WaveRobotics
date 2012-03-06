@@ -16,6 +16,8 @@ public:
 	
 	void fire();
 	
+	void slowfire();
+	
 private:
 	Victor *deliveryMotor;
 	

@@ -7,6 +7,7 @@
 #include "WaveDeliverySystem.hpp"
 #include "AutonomousCommands.hpp"
 #include "WaveIOBoard.hpp"
+#include "WaveDashboardUpdate.hpp"
 
 class WaveRobotProject : public SimpleRobot
 {
@@ -40,7 +41,14 @@ private:
 
 	WaveIOBoard *ioBoard; 
 	
+	WaveDashboardUpdate *wavedashboard;
+	
+	static AxisCamera &axisCamera;
+	
 	AutonomousCommands *autonomous;
+	bool startedAutonomous;
+	int autoState;
+	Timer *timer;
 	
 	bool buttonControlUpSpeed;
 	

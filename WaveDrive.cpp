@@ -54,7 +54,7 @@ void WaveDrive::run()
 		double leftValue;
 		double rightValue;
 		
-		bool shifter = m_joystick->GetRawButton(6);
+		bool shifter = !(m_joystick->GetRawButton(6));
 		
 		bool leftNeg = leftValue < 0;
 		bool rightNeg = rightValue < 0;
@@ -135,7 +135,7 @@ void WaveDrive::startMeasure()
 
 double WaveDrive::getDistanceTraveled()
 {
-	return rightEncoder->Get() * 13.7445 / 500;
+	return leftEncoder->Get() * (15.1189 / 500); //5inch wheel
 }
 
 void WaveDrive::stop()

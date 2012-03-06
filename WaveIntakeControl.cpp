@@ -57,6 +57,12 @@ void WaveIntakeControl::activatePosition()
 	}
 }
 
+void WaveIntakeControl::activatePosition(Position setPosition)
+{
+	position = setPosition;
+	activatePosition();
+}
+
 void WaveIntakeControl::resetIntakePosition()
 {
 	position = Position_Up;

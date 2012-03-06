@@ -7,6 +7,25 @@ WaveIOBoard::WaveIOBoard()
 	m_driverStation = DriverStation::GetInstance();
 }
 
+int WaveIOBoard::getCypressDial()
+{
+    DriverStationEnhancedIO &cypressBoard = m_driverStation->GetEnhancedIO();
+	
+    UINT16 position = (cypressBoard.GetDigital(7) ? 0 : 4);
+    position += (cypressBoard.GetDigital(3) ? 0 : 2);
+    position += (cypressBoard.GetDigital(1) ? 0 : 1);
+    return position;
+} //getCypressDial
+
+void WaveIOBoard::printCypressDial()
+{
+    DriverStationEnhancedIO &cypressBoard = m_driverStation->GetEnhancedIO();
+	
+    cout << cypressBoard.GetDigital(1) << cypressBoard.GetDigital(3) << cypressBoard.GetDigital(7) 
+    	<< "  =>" << getCypressDial() << endl;
+} //getCypressDial
+
+
 void WaveIOBoard::run()
 {
 	//Enhanced IO
@@ -48,6 +67,6 @@ void WaveIOBoard::run()
 	//cout << (UINT32)input << endl;
 	
 	
-}
+} //run
 
 

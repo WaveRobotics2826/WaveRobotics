@@ -16,7 +16,7 @@ WaveDeliverySystem::WaveDeliverySystem(int channel, int slot)
 
 void WaveDeliverySystem::run(Joystick *joystick)
 {
-	if(joystick->GetRawButton(1))
+	if(joystick->GetRawButton(8))
 	{
 		resetAuto();
 		fire();
@@ -53,6 +53,11 @@ void WaveDeliverySystem::resetAuto()
 void WaveDeliverySystem::fire()
 {
 	deliveryMotor->Set(-1.0);
+}
+
+void WaveDeliverySystem::slowfire()
+{
+	deliveryMotor->Set(-.50);
 }
 
 void WaveDeliverySystem::automaticDelivery()

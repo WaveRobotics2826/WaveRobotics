@@ -32,13 +32,37 @@ void WaveTurretControl::run(Joystick *joystick)
 		}
 		vex1->SetRaw((int)(input));
 		vex2->SetRaw((int)(input));
-//}
+
+
+	// left and right analog buttons
+	double input2 = -joystick->GetRawAxis(6);
+	int sensorCount2 = turretSensor->GetValue();
+	//cout << sensorCount << endl;
+	//{
+//		if(sensorCount < 200 || sensorCount > 700)
+//		{
+//			input = input * .25;
+//		}
+		input = (input * 127) + 128;
+		if(input > 253)
+		{
+			input = 253;
+		}
+		if(input < 2)
+		{
+			input = 2;
+		}
+		vex1->SetRaw((int)(input * .5));
+		vex2->SetRaw((int)(input * .5));
+
+
+}
 	//else
 	//{		
 	//	vex1->SetRaw(128);
 	//	vex2->SetRaw(128);
 	//}
-}
+
 
 
 

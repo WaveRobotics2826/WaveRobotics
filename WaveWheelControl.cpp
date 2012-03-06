@@ -51,6 +51,11 @@ void WaveWheelControl::setSpeed(int rpms)
 	pidController->SetSetpoint(rpms);
 }
 
+double WaveWheelControl::getSpeedSet()
+{
+	return (pidController->GetSetpoint());
+}
+
 void WaveWheelControl::stopWheel()
 {
 	pidController->Disable();
