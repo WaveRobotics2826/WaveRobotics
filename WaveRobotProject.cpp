@@ -31,7 +31,7 @@ WaveRobotProject::WaveRobotProject(void)
 	ioBoard = new WaveIOBoard();
 	timer = new Timer();
 	wavedashboard = new WaveDashboardUpdate();
-	
+	autoAim = new AutoAim(turret);
 	drive->configureSolenoids(Shift_Default);
 	intake->configureSolenoids(
 		Long_Cylinder_Solenoid,
@@ -219,10 +219,12 @@ void WaveRobotProject::Autonomous(void)
 
 void WaveRobotProject::OperatorControl(void)
 {	
+	autoAim->autoAimOn();
 	compressor->run();	
 	drive->startMeasure();
 	while(IsOperatorControl())
 	{	
+		autoAim->autoAimRun();
 		//ioBoard->printCypressDial();
 		//cout << drive->getDistanceTraveled() << endl;
 		drive->getDistanceTraveled();
@@ -307,6 +309,7 @@ void WaveRobotProject::OperatorControl(void)
 	}
 	compressor->stop();
 	intake->resetIntakePosition();
+	autoAim->autoAimOff();
 }
 
 

@@ -10,6 +10,8 @@ public:
 	WaveTurretControl();
 	
 	void run(Joystick *joystick);
+	//-1 to 1
+	void moveTurret(float speed);
 private:
 	PWM *vex1;
 	

@@ -8,6 +8,7 @@
 #include "AutonomousCommands.hpp"
 #include "WaveIOBoard.hpp"
 #include "WaveDashboardUpdate.hpp"
+#include "AutoAim.hpp"
 
 class WaveRobotProject : public SimpleRobot
 {
@@ -40,6 +41,8 @@ private:
 	WaveIntakeControl *intake;
 
 	WaveIOBoard *ioBoard; 
+	
+	AutoAim *autoAim;
 	
 	WaveDashboardUpdate *wavedashboard;
 	
