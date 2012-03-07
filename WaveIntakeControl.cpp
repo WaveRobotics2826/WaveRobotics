@@ -68,6 +68,11 @@ void WaveIntakeControl::resetIntakePosition()
 	position = Position_Up;
 }
 
+void WaveIntakeControl::intakePercentage(double percent)
+{
+	intakeMotor->Set(-(motorSpeed * percent));
+}
+
 void WaveIntakeControl::intakeOn(bool reverse)
 {
 	if(reverse)

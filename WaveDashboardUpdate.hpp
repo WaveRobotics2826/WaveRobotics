@@ -3,10 +3,13 @@
 
 
 #include "WPILib.h"
+#include "WaveWheelControl.hpp"
+
+
 class WaveDashboardUpdate
 {
 public:
-	WaveDashboardUpdate();
+	WaveDashboardUpdate(WaveWheelControl *wheelControl);
 	
 	void run();
 	
@@ -19,7 +22,7 @@ private:
 	bool isSystemTargeted;
 	bool isShooterAtSpeed;
 	double targetDistance;
-	
+	WaveWheelControl *launcher;
 	
 };
 

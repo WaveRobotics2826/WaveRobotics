@@ -19,4 +19,6 @@ private:
 	WaveTurretControl *turret;
 	
 	pthread_t serverThread;
+	
+	float accum;
 };

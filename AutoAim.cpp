@@ -26,30 +26,32 @@ namespace vision
 	int pixelDistance;
 }
 struct sockaddr_in si_me, si_other;
-int s, i, slen=sizeof(si_other);
+int sock, slen=sizeof(si_other);
 char buf[50];
 
-void diePretty(char *s)
+void diePretty(char *s2)
 {
-	perror(s);
+	perror(s2);
 	exit(1);
 }
 
 
 void *socketFunction(void*ptr)
 {
-	if ((s=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP))==-1)
+	if ((sock=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP))==-1)
 		diePretty("socket");		
 	
 	memset((char *) &si_me, 0, sizeof(si_me));
 	si_me.sin_family = AF_INET;
 	si_me.sin_port = htons(PORT);
 	si_me.sin_addr.s_addr = htonl(INADDR_ANY);
-	if (bind(s, (sockaddr *)&si_me, sizeof(si_me))==-1)
+	if (bind(sock, (sockaddr *)&si_me, sizeof(si_me))==-1)
 		diePretty("bind");
 	while(1)
 	{
-		int rValue = recvfrom(s, buf, BUFLEN, 0, (sockaddr*)&si_other, &slen);	
+		
+		int rValue = recvfrom(sock, buf, BUFLEN, 0, (sockaddr*)&si_other, &slen);
+		
 		int counter;
 		int offset;
 		char numberOne[5];
@@ -58,7 +60,7 @@ void *socketFunction(void*ptr)
 		
 		if(vision::gotUpdate && (rValue != -1))
 		{
-			cout << "Entered..." << endl;
+			//cout << "Entered..." << endl;
 			for(counter = 0; counter < BUFLEN; counter++)
 			{
 				if(first)
@@ -95,16 +97,17 @@ void *socketFunction(void*ptr)
 			pthread_mutex_lock(&mutex1);
 			vision::gotUpdate = false;
 			pthread_mutex_unlock(&mutex1);
-			cout << numberOne << " : " << numberTwo << endl;
+			//cout << numberOne << " : " << numberTwo << endl;
 		}
-		
 	}
 }
 
 AutoAim::AutoAim(WaveTurretControl *turret)
 {
-	turret = turret;
+	this->turret = turret;
+	accum = 0;
 	useAutoAim = false;
+	cout << "calling AutoAim" << endl;
 	pthread_create(&serverThread, NULL, socketFunction, (void*)NULL);
 }
 	
@@ -119,16 +122,30 @@ void AutoAim::autoAimOff()
 }
 
 void AutoAim::autoAimRun()
-{
+{	
 	if(useAutoAim)
 	{
 		pthread_mutex_lock(&mutex1);
+		int distance = vision::pixelDistance;
 		vision::gotUpdate = true;
 		pthread_mutex_unlock(&mutex1);
-		cout << "Pixel Distance: " << vision::pixelDistance << endl;
-		if(vision::pixelDistance < -5 && vision::pixelDistance > 5)
+		if(distance != 999)
 		{
-			turret->moveTurret((320/vision::pixelDistance) + .1);
+			if(distance < -1 || distance > 1)
+			{
+				float error = ((float)distance/160) + accum;				
+				accum += distance * .0001;
+				turret->moveTurret(-error);
+				cout << "Pixel Distance: " << distance << " motor request: " << error << endl;
+			}
+			else
+			{
+				turret->moveTurret(0);
+			}
 		}
+	}
+	else
+	{
+		accum = 0;
 	}
 }

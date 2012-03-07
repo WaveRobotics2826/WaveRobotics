@@ -25,7 +25,7 @@ bool AutonomousCommands::forwardReverseDriveCommand(double speed, double distanc
 	{
 		cout << "run fast" << endl;
 		drive->setLeftMotor(speed);
-		drive->setRightMotor(speed * .95);
+		drive->setRightMotor(speed * .90);
 	}
 
 	if(((distance > 0) && (drive->getDistanceTraveled() > distance)) ||

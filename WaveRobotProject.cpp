@@ -14,7 +14,7 @@ using namespace std;
 
 const char *cameraIP = "10.28.26.11";
 
-static AxisCamera &axisCamera = AxisCamera::GetInstance(cameraIP);
+//static AxisCamera &axisCamera = AxisCamera::GetInstance(cameraIP);
 
 
 WaveRobotProject::WaveRobotProject(void)
@@ -30,7 +30,8 @@ WaveRobotProject::WaveRobotProject(void)
 	intake = new WaveIntakeControl(5, 1, 1.0);	
 	ioBoard = new WaveIOBoard();
 	timer = new Timer();
-	wavedashboard = new WaveDashboardUpdate();
+	wavedashboard = new WaveDashboardUpdate(launcher);
+	autoAim = new AutoAim(turret);
 	
 	drive->configureSolenoids(Shift_Default);
 	intake->configureSolenoids(
@@ -78,9 +79,6 @@ void WaveRobotProject::Autonomous(void)
 					{
 						//wait for wheel to speed up
 					}
-					//timer->Start();
-					//while(!(timer->HasPeriodPassed(6.0)))
-					//{}
 					Wait(6.0);
 					delivery->slowfire();
 				}
@@ -111,7 +109,7 @@ void WaveRobotProject::Autonomous(void)
 				drive->resetMeasure();
 				while(IsAutonomous())
 				{
-					launcher->setSpeed(2550); //set speed
+					launcher->setSpeed(2450); //set speed
 					switch(autoState)
 					{
 				    	case 1: //get to bridge
@@ -125,7 +123,7 @@ void WaveRobotProject::Autonomous(void)
 				    		break;
 				    		
 				    	case 2: //sensor
-				    		if(autonomous->forwardReverseDriveCommand(-.4, -1.5) )
+				    		if(autonomous->forwardReverseDriveCommand(-.4, -1) )
 				    		{
 				    			drive->stop();
 				    			autoState = 3;
@@ -135,7 +133,8 @@ void WaveRobotProject::Autonomous(void)
 				    	case 3: //lower bridge
 				    		delivery->fire(); //shooting
 				    		intake->activatePosition(Position_Down);
-				    		intake->intakeOn(true);
+				    	//	intake->intakeOn(true);
+				    		intake->intakeOff();
 				    		Wait(3);
 				    		
 				    			autoState = 4;
@@ -143,12 +142,14 @@ void WaveRobotProject::Autonomous(void)
 				    		break;
 				    	case 4: //Raise intake to bridge position
 				    		intake->activatePosition(Position_Ramp);
+				    		intake->intakePercentage(0.62);	
 				    		Wait(2);
 				    		autoState = 5;
 				    		break;
 				    	case 5:
-				    		intake->activatePosition(Position_Down);
-				    		intake->intakeOn(true);	
+				    		intake->activatePosition(Position_Ramp);
+				    		//intake->activatePosition(Position_Down);
+				    		intake->intakeOff();
 				    		autoState = 0;
 				    		break;
 				    	default:
@@ -221,17 +222,16 @@ void WaveRobotProject::OperatorControl(void)
 {	
 	compressor->run();	
 	drive->startMeasure();
+	autoAim->autoAimOn();
 	while(IsOperatorControl())
 	{	
-		//ioBoard->printCypressDial();
 		//cout << drive->getDistanceTraveled() << endl;
 		drive->getDistanceTraveled();
 		delivery->run(operatorJoystick);
 		turret->run(operatorJoystick);
 		intake->run(driverJoystick);
 		wavedashboard->run();
-		//ioBoard->run();
-		
+		autoAim->autoAimRun();
 		if(operatorJoystick->GetRawButton(5))
 		{		
 			intake->intakeOn(true);
@@ -260,36 +260,32 @@ void WaveRobotProject::OperatorControl(void)
 				launcher->decreaseSpeed(10);
 			}
 		}
+		else if(operatorJoystick->GetRawButton(3))
+		{
+			if(!buttonControlUpSpeedFast)
+			{
+				buttonControlUpSpeedFast = true;
+				launcher->increaseSpeed(100);
+			}
+		}
+		else if(operatorJoystick->GetRawButton(1))
+	    {
+			if(!buttonControlDownSpeedFast)
+			{
+				buttonControlDownSpeedFast = true;
+				launcher->decreaseSpeed(100);
+			}
+		}
 		else
 		{
 			buttonControlUpSpeed = false;
 			buttonControlDownSpeed = false;
+			buttonControlUpSpeedFast = false;
+			buttonControlDownSpeedFast = false;
 		}
 		
 		
-//		if(operatorJoystick->GetRawButton(3))
-//		{
-//			if(!buttonControlUpSpeed)
-//			{
-//				buttonControlUpSpeed = true;
-//				launcher->increaseSpeed(10);
-//			}
-//		}
-//		else if(operatorJoystick->GetRawButton(1))
-//		{
-//			if(!buttonControlDownSpeed)
-//			{
-//				buttonControlDownSpeed = true;
-//				launcher->decreaseSpeed(10);
-//			}
-//		}
-//		else
-//		{
-//			buttonControlUpSpeed = false;
-//			buttonControlDownSpeed = false;
-//		}
-
-		
+		//Updates LED on Dashboard
 		if((launcher->PIDGet() > (launcher->getSpeedSet() - 15)) &&
 	       (launcher->PIDGet() < (launcher->getSpeedSet() + 15)))
 		{
@@ -305,6 +301,7 @@ void WaveRobotProject::OperatorControl(void)
 		drive->run();
 		display->UpdateLCD();
 	}
+	autoAim->autoAimOff();
 	compressor->stop();
 	intake->resetIntakePosition();
 }
