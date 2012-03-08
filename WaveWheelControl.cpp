@@ -68,7 +68,10 @@ void WaveWheelControl::startWheel()
 	
 void WaveWheelControl::increaseSpeed(int value)
 {
-	pidController->SetSetpoint(pidController->GetSetpoint() + value);
+	if(value < 3001) //bearings are rated to 3500, make max rpm 3000
+	{
+		pidController->SetSetpoint(pidController->GetSetpoint() + value);
+	}
 }
 
 void WaveWheelControl::decreaseSpeed(int value)

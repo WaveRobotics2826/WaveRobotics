@@ -25,6 +25,8 @@ public:
 	/// \brief Commands 100% motor speed for intake
 	void intakeOn(bool reverse = false);
 	
+	/// \ brief percent is 0 to 1. Will intake
+	void intakePercentage(double percent);
 	/// \brief Commands 0% motor speed for intake
 	void intakeOff();		
 	

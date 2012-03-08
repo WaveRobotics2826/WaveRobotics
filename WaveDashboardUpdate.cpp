@@ -5,12 +5,12 @@
 
 
 
-WaveDashboardUpdate::WaveDashboardUpdate()
+WaveDashboardUpdate::WaveDashboardUpdate(WaveWheelControl *wheelControl)
 {
 	isSystemTargeted = false;
 	isShooterAtSpeed = false;
 	targetDistance = 0;
-	
+	launcher = wheelControl;
 }
 
 void WaveDashboardUpdate::updateDistance(double distanceToTarget)
@@ -36,6 +36,8 @@ void WaveDashboardUpdate::run()
 		d.AddBoolean(isSystemTargeted);
 		d.AddBoolean(isShooterAtSpeed);
 		d.AddDouble(targetDistance);
+		d.AddDouble(launcher->getSpeedSet());
+		d.AddDouble(launcher->PIDGet());
 	}
     d.FinalizeCluster();
     d.Finalize();

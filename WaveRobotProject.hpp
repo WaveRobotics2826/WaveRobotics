@@ -24,6 +24,8 @@ public:
 private:
 	WaveDrive *drive;
 	
+	Solenoid *sensorPower;
+	
 	Joystick *driverJoystick;
 	
 	Joystick *operatorJoystick;
@@ -39,14 +41,14 @@ private:
 	WaveWheelControl *launcher;
 	
 	WaveIntakeControl *intake;
-
+		
 	WaveIOBoard *ioBoard; 
 	
 	AutoAim *autoAim;
 	
 	WaveDashboardUpdate *wavedashboard;
 	
-	static AxisCamera &axisCamera;
+	//static AxisCamera &axisCamera;
 	
 	AutonomousCommands *autonomous;
 	bool startedAutonomous;
@@ -56,6 +58,10 @@ private:
 	bool buttonControlUpSpeed;
 	
 	bool buttonControlDownSpeed;	
+	
+	bool buttonControlUpSpeedFast;
+	bool buttonControlDownSpeedFast;
+
 };
 
 
