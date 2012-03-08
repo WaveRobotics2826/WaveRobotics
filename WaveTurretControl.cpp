@@ -10,16 +10,35 @@ WaveTurretControl::WaveTurretControl()
 	turretSensor = new AnalogChannel(Turret_Angle_Sensor);
 }
 	
-void WaveTurretControl::moveTurret(double input)
+
+void WaveTurretControl::moveTurret(float input)
 {
 	visionInput = input;
 	hasVisionInput = true;
+}
+
+void WaveTurretControl::toggleVision()
+{
+	overrideVision = !overrideVision;
 }
 
 void WaveTurretControl::run(Joystick *joystick)
 {
 	// left and right analog buttons
 	double input = -joystick->GetRawAxis(4);
+	if(joystick->GetRawAxis(7) && joystick->GetRawAxis(8))
+	{
+		if(!overridePressRelease)
+		{
+			toggleVision();
+			overridePressRelease = true;
+		}
+	}
+	else
+	{
+		overridePressRelease = false;
+	}
+	
 	int sensorCount = turretSensor->GetValue();	
 		
 	if(input > 1)
@@ -33,7 +52,7 @@ void WaveTurretControl::run(Joystick *joystick)
 	}
 	if(input == 0)
 	{
-		if(hasVisionInput)
+		if(hasVisionInput && !overrideVision)
 		{
 			input = visionInput;
 			hasVisionInput = false;
@@ -48,7 +67,6 @@ void WaveTurretControl::run(Joystick *joystick)
 	{
 		input = 2;
 	}
-	
 	vex1->SetRaw((int)(input));
 	vex2->SetRaw((int)(input));
 }

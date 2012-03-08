@@ -8,11 +8,14 @@ class WaveTurretControl
 {
 public:
 	WaveTurretControl();
-	
-	void moveTurret(double input);
-	
+		
 	void run(Joystick *joystick);
-private:
+	//-1 to 1
+	void moveTurret(float speed);
+	
+private:	
+	void toggleVision();
+	
 	PWM *vex1;
 	
 	PWM *vex2;
@@ -22,6 +25,10 @@ private:
 	double visionInput;
 	
 	AnalogChannel *turretSensor;
+	
+	bool overrideVision;
+	
+	bool overridePressRelease;
 	
 };
 
