@@ -27,7 +27,7 @@ void WaveTurretControl::run(Joystick *joystick)
 	if(input < -1)
 		input = -1;
 	
-	if(input > -.1 && input < .1)
+	if(input > -.2 && input < .2)
 	{
 		input = 0;
 	}

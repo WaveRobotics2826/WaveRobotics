@@ -37,11 +37,51 @@ void WaveDrive::configureSolenoids(int one)
 void WaveDrive::run()
 {
 	if(!isAutonomousMode)
-	{
+	{ 
+		
+		/*//Tank Mode
+		double leftJS =  m_joystick->GetRawAxis(leftAxis);
+		double rightJS = m_joystick->GetRawAxis(rightAxis);
+		
+		if(leftJS  <= .1 && leftJS >= -.1)
+				{
+					leftJS = 0;
+				}
+				
+				if(rightJS <= .1 && rightJS >= -.1)
+				{
+					rightJS = 0;
+				}	
+		
+		bool shifter = !(m_joystick->GetRawButton(6));
+		
+		if(leftJS > 1.0)
+			leftJS = 1.0;
+		if(rightJS > 1.0)
+			rightJS = 1.0;
+		if(leftJS < -1.0)
+			leftJS = -1.0;
+		if(rightJS < -1.0)
+			rightJS = -1.0;
+		
+		//Invert Left Motor Direction
+		leftJS = leftJS * -1;
+		
+		// Set motors
+		rightMotor1->Set(rightJS);
+		rightMotor2->Set(rightJS);
+				
+		leftMotor1->Set(leftJS);
+		leftMotor2->Set(leftJS);	
+		
+		//End tank mode */
+		
+		
+		//Arcade Mode
 		double forwardReverse =  m_joystick->GetRawAxis(leftAxis);
 		double leftRight = m_joystick->GetRawAxis(rightAxis);
 		
-		if(forwardReverse  <= .1 && forwardReverse >= 0)
+		if(forwardReverse  <= .1 && forwardReverse >= -.1)
 		{
 			forwardReverse = 0;
 		}
@@ -116,6 +156,7 @@ void WaveDrive::run()
 		
 		leftMotor1->Set(leftValue);
 		leftMotor2->Set(leftValue);	
+		
 		
 		shiftSolenoid->Set(shifter);
 	}

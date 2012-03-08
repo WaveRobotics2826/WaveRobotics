@@ -133,10 +133,20 @@ void AutoAim::autoAimRun()
 		{
 			if(distance < -1 || distance > 1)
 			{
-				float error = ((float)distance/160) + accum;				
-				accum += distance * .0001;
+				float error = ((float)distance/560) + accum;				
+				accum += distance * .000005;
+				if(accum > 1)
+				{
+					accum = 1;
+					
+				}
+				
+				if(accum < -1)
+				{
+					accum = -1;
+				}
 				turret->moveTurret(-error);
-				cout << "Pixel Distance: " << distance << " motor request: " << error << endl;
+				cout << "Pixel Distance: " << distance << " motor request: " << error << " accum: " << accum << endl;
 			}
 			else
 			{

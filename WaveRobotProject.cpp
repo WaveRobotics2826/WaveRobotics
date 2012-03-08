@@ -69,13 +69,13 @@ void WaveRobotProject::Autonomous(void)
 		
 		switch(switchMode)
 		{
-			case 0: //sit and shoot top of key
+			case 0: //sit at top of key and shoot at top hoop
 			{
 				while(IsAutonomous())
 				{
 					//timer->Reset(); 
-					launcher->setSpeed(2170);
-					while(launcher->PIDGet() < 2170)
+					launcher->setSpeed(2150);
+					while(launcher->PIDGet() < 2150)
 					{
 						//wait for wheel to speed up
 					}
@@ -85,12 +85,12 @@ void WaveRobotProject::Autonomous(void)
 								
 				break;
 			}
-			case 1: //sit and shoot side of key
+			case 1: //sit at side of key and shoot at middle hoop
 			{	
 				while(IsAutonomous())
 				{
-					launcher->setSpeed(2250);
-					while(launcher->PIDGet() < 2250)
+					launcher->setSpeed(1650);
+					while(launcher->PIDGet() < 1650)
 					{
 						//wait for wheel to speed up
 					}
@@ -101,7 +101,7 @@ void WaveRobotProject::Autonomous(void)
 							
 				break;
 			}
-			case 2:  
+			case 2:  //Drive to bridge then shoot
 			{   //Drive 120 inches or until bridge sensor is tripped. Start firing balls
 			    //Lower the Intake to the floor position. Start Intake rollers. Wait 4 seconds.
 			    //Raise the Intake to the bridge position.
